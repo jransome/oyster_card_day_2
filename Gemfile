@@ -2,13 +2,10 @@
 source "https://rubygems.org"
 ruby '2.4.0'
 
-group :development do
+group :development, :test do
 	gem 'rspec'
-end
-
-group :test do
-	gem 'rspec'
+	gem 'rubocop'
 end
 
  # gem "rails"
- # gem 
+ # gem

@@ -40,8 +40,12 @@ describe OysterCard do
   	expect(oyster_card).to be_in_journey
   end
 
-  it 'does not allow touch in if balance is less than £1' do
-    expect{ oyster_card.touch_in }.to raise_error "Seek Assistance: not enough money!"
+  context 'balance is less than £1' do
+    
+    it 'does not allow touch in if balance is less than £1' do
+      expect{ oyster_card.touch_in }.to raise_error "Seek Assistance: not enough money!"
+    end
   end
+
 
 end

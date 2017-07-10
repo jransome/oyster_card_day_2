@@ -2,6 +2,7 @@ class OysterCard
 
 	attr_reader :balance
 	MAXIMUM_BALANCE = 90
+	MINIMUM_FARE = 1
 	attr_accessor :in_journey
 
 
@@ -20,11 +21,12 @@ class OysterCard
 	end
 
 	def touch_in
+		fail("Seek Assistance: not enough money!") if @balance < MINIMUM_FARE
 		@in_journey = true
 	end
 
 	def touch_out
-		@in_journey = false	
+		@in_journey = false
 	end
 
 	def in_journey?

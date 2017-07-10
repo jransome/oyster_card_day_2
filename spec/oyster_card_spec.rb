@@ -35,8 +35,13 @@ describe OysterCard do
   end
 
   it 'is on a journey' do
+    oyster_card.top_up(top_up_amount)
   	oyster_card.touch_in
   	expect(oyster_card).to be_in_journey
+  end
+
+  it 'does not allow touch in if balance is less than £1' do
+    expect{ oyster_card.touch_in }.to raise_error "Seek Assistance: not enough money!"
   end
 
 end

@@ -4,6 +4,7 @@ describe OysterCard do
 
   subject(:oyster_card) { described_class.new }
   let(:top_up_amount) { 15 }
+  let(:fare) { 2.80 }
 
   it "will have a balance " do
     expect(oyster_card).to respond_to(:balance)
@@ -17,8 +18,12 @@ describe OysterCard do
     expect{ oyster_card.top_up(top_up_amount) }.to change{ oyster_card.balance }.by top_up_amount
   end
 
-it 'cannot have a balance of more than 90' do
-	expect { oyster_card.top_up(91) }.to raise_error "Maximum balance exceeded, please keep your balance at £#{OysterCard::MAXIMUM_BALANCE} or below."
-end
+  it 'cannot have a balance of more than 90' do
+	  expect { oyster_card.top_up(91) }.to raise_error "Maximum balance exceeded, please keep your balance at £#{OysterCard::MAXIMUM_BALANCE} or below."
+  end
+
+  it 'can have money deducted from its balance' do
+    expect{ oyster_card.deduct(fare) }.to change{ oyster_card.balance }.by -fare
+  end
 
 end

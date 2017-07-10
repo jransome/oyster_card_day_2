@@ -4,7 +4,7 @@ describe OysterCard do
 
   subject(:oyster_card) { described_class.new }
   let(:top_up_amount) { 15 }
-  let(:fare) { 2.80 }
+  # let(:fare) { 2.80 }
 
   it "will have a balance " do
     expect(oyster_card).to respond_to(:balance)
@@ -20,10 +20,6 @@ describe OysterCard do
 
   it 'cannot have a balance of more than 90' do
 	  expect { oyster_card.top_up(91) }.to raise_error "Maximum balance exceeded, please keep your balance at £#{OysterCard::MAXIMUM_BALANCE} or below."
-  end
-
-  it 'can have money deducted from its balance' do
-    expect{ oyster_card.deduct(fare) }.to change{ oyster_card.balance }.by -fare
   end
 
   it 'can touch in' do
@@ -45,6 +41,12 @@ describe OysterCard do
     it 'does not allow touch in if balance is less than £1' do
       expect{ oyster_card.touch_in }.to raise_error "Seek Assistance: not enough money!"
     end
+  end
+
+  it 'will have balance deducted when touching out' do
+  	oyster_card.top_up(top_up_amount)
+  	oyster_card.touch_in
+    expect{ oyster_card.touch_out }.to change{ oyster_card.balance }.by -OysterCard::MINIMUM_FARE
   end
 
 

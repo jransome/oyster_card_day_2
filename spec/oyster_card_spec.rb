@@ -26,4 +26,17 @@ describe OysterCard do
     expect{ oyster_card.deduct(fare) }.to change{ oyster_card.balance }.by -fare
   end
 
+  it 'can touch in' do
+  	expect(oyster_card).to respond_to(:touch_in)
+  end
+
+  it 'can touch out' do
+  	expect(oyster_card).to respond_to(:touch_out)
+  end
+
+  it 'is on a journey' do
+  	oyster_card.touch_in
+  	expect(oyster_card).to be_in_journey
+  end
+
 end

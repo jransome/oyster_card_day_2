@@ -1,3 +1,13 @@
-describe Oystercard do
+require "oystercard"
+
+describe OysterCard do
   
-end
+  subject(:oystercard) { described_class.new }
+
+it "will have a balance " do
+	expect(oystercard).to respond_to(:balance)
+	end
+
+
+
+end	

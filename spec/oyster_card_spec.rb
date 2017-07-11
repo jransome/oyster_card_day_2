@@ -31,16 +31,18 @@ describe OysterCard do
     expect{ oyster_card.touch_in(entry_station) }.to raise_error "Seek Assistance: not enough money!"
   end
 
-  context 'Oystercard has money on it' do
-    before {oyster_card.top_up(top_up_amount)}
+  context 'Journey in progress, Oystercard has money on it' do
+
+    before do
+      oyster_card.top_up(top_up_amount)
+      oyster_card.touch_in(entry_station)
+    end
 
     it 'is on a journey' do
-    	oyster_card.touch_in(entry_station)
     	expect(oyster_card).to be_in_journey
     end
-    
+
     it 'will have balance deducted when touching out' do
-    	oyster_card.touch_in(entry_station)
       expect{ oyster_card.touch_out(exit_station) }.to change{ oyster_card.balance }.by -OysterCard::MINIMUM_FARE
     end
   end

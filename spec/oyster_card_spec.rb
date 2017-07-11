@@ -4,6 +4,7 @@ describe OysterCard do
 
   subject(:oyster_card) { described_class.new }
   let(:top_up_amount) { 15 }
+
   # let(:fare) { 2.80 }
 
   it "will have a balance " do
@@ -36,11 +37,9 @@ describe OysterCard do
   	expect(oyster_card).to be_in_journey
   end
 
-  context 'balance is less than £1' do
-    
-    it 'does not allow touch in if balance is less than £1' do
-      expect{ oyster_card.touch_in }.to raise_error "Seek Assistance: not enough money!"
-    end
+  it "does not allow touch in if balance is less than #{OysterCard::MINIMUM_FARE}" do
+    oyster_card.top_up(rand)
+    expect{ oyster_card.touch_in }.to raise_error "Seek Assistance: not enough money!"
   end
 
   it 'will have balance deducted when touching out' do

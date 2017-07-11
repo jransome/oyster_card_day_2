@@ -6,7 +6,7 @@ describe OysterCard do
   let(:top_up_amount) { 15 }
   let(:entry_station) { double "Entry station"}
   let(:exit_station) { double "Exit station"}
-  let(:journey) { {entry_station: entry_station, exit_station: exit_station} }
+  let(:journey) { instance_double "Journey" }
 
   # let(:fare) { 2.80 }
 
@@ -52,6 +52,8 @@ describe OysterCard do
       expect(oyster_card.journeys).to be_empty
     end
   end
+
+
 
   context 'one journey completed' do
     before do

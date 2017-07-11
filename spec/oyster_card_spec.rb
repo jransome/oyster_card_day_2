@@ -5,6 +5,8 @@ describe OysterCard do
   subject(:oyster_card) { described_class.new }
   let(:top_up_amount) { 15 }
   let(:entry_station) { double "Entry station"}
+  let(:exit_station) { double "Exit station"}
+  let(:journey) { {entry_station: entry_station, exit_station: exit_station} }
 
   # let(:fare) { 2.80 }
 
@@ -26,30 +28,38 @@ describe OysterCard do
 
   it "does not allow touch in if balance is less than #{OysterCard::MINIMUM_FARE}" do
     oyster_card.top_up(rand)
-    expect{ oyster_card.touch_in(:entry_station) }.to raise_error "Seek Assistance: not enough money!"
+    expect{ oyster_card.touch_in(entry_station) }.to raise_error "Seek Assistance: not enough money!"
   end
 
   context 'Oystercard has money on it' do
     before {oyster_card.top_up(top_up_amount)}
 
     it 'is on a journey' do
-    	oyster_card.touch_in(:entry_station)
+    	oyster_card.touch_in(entry_station)
     	expect(oyster_card).to be_in_journey
     end
+    
     it 'will have balance deducted when touching out' do
-    	oyster_card.touch_in(:entry_station)
-      expect{ oyster_card.touch_out }.to change{ oyster_card.balance }.by -OysterCard::MINIMUM_FARE
+    	oyster_card.touch_in(entry_station)
+      expect{ oyster_card.touch_out(exit_station) }.to change{ oyster_card.balance }.by -OysterCard::MINIMUM_FARE
+    end
+  end
+
+  context 'new instance' do
+    it 'has an empty list of journeys by default' do
+      expect(oyster_card.journeys).to be_empty
+    end
+  end
+
+  context 'one journey completed' do
+    before do
+      oyster_card.top_up(top_up_amount)
+      oyster_card.touch_in(entry_station)
+      oyster_card.touch_out(exit_station)
     end
 
-    it 'registers the entry station' do
-      oyster_card.touch_in(:entry_station)
-      expect(oyster_card.entry_station).to eq :entry_station
-    end
-
-    it 'forgets te entry station on touch-out' do
-      oyster_card.touch_in(:entry_station)
-      oyster_card.touch_out
-      expect(oyster_card.entry_station).to eq nil
+    it 'logs a single journey' do
+      expect(oyster_card.journeys.last).to eq journey
     end
   end
 
